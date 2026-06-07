@@ -442,7 +442,7 @@ function App() {
     }
   };
 
-  // --- NEW: PERSIST NOTIFICATION CHANNEL CHANGES ---
+ // --- UPDATE THIS FUNCTION IN YOUR APP.JS ---
   const handleSavePreferences = async (e) => {
     e.preventDefault();
     setSettingsMessage('');
@@ -453,8 +453,17 @@ function App() {
     }
 
     try {
+      // Send BOTH root values and structured objects to satisfy any backend design
       await axios.put('/api/auth/update-preferences', 
-        { phoneNumber, emailEnabled, smsEnabled },
+        { 
+          phoneNumber, 
+          emailEnabled, 
+          smsEnabled,
+          preferences: {
+            emailEnabled,
+            smsEnabled
+          }
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSettingsMessage('✅ Channels updated successfully!');
